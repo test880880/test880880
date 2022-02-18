@@ -38,3 +38,5 @@ setInterval(() => Scene.ctx ? Scene.getInstance().update() : null, 10);
 
 ###
 Make all public class out of async function
+###
+in project html there is a place where it resizes canvas, in if statement add \*1 to canvas.width(\*1) !== 
