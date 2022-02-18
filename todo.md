@@ -19,3 +19,5 @@ add language section to main menu with emoji/logo of translators
 add theme section to main menu with emoji/logo of a canvas
 
 in project.html decodeURI the window.location.href
+
+remove the Group class and add a group section to Scene class
