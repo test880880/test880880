@@ -17,3 +17,5 @@ remove .light thing from everywhere
 add language section to main menu with emoji/logo of translators
 
 add theme section to main menu with emoji/logo of a canvas
+
+in project.html decodeURI the window.location.href
