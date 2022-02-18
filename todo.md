@@ -9,3 +9,5 @@ if (!cache.projects.includes(json.data.path)) cache["projects"].push(json.data.p
 ```
 
 add timestamp to project cache
+
+sort them by timestamp in main menu
