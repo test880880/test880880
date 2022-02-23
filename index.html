@@ -1,0 +1,55 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.1, maximum-scale=1.1, minimum-scale=1.1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Test</title>
+</head>
+<body>
+<canvas id="canvas" style="border: 1px solid black"></canvas>
+<span id="ms"></span>
+<script src="finder.js"></script>
+<script>
+    let s = Date.now();
+    const response = search([
+        [1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1]
+    ], {x: 1, y: 1}, {x: 3, y: 3}, {diagonal: true});
+    document.getElementById("ms").innerHTML = (Date.now() - s) + "ms";
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = response.grid[0].length * 64;
+    canvas.height = response.grid.length * 64;
+    let r = 0;
+    addEventListener("keydown", ev => {
+        if (ev.key === " ") {
+            if (!response.all[r]) r = 0;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            response.all[r].forEach((a, j) => {
+                ctx.globalAlpha = j / response.all[r].length;
+                ctx.fillRect(a.x * 64, a.y * 64, 64, 64);
+                for (let x = 0; x <= canvas.width; x += 64) ctx.fillRect(x, 0, 1, canvas.height);
+                for (let y = 0; y <= canvas.height; y += 64) ctx.fillRect(0, y, canvas.width, 1);
+                ctx.globalAlpha = 1.0;
+            });
+            r++;
+        }
+        if (ev.key === "Shift") {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            response.best.forEach((a, j) => {
+                ctx.globalAlpha = (j + 1) / response.best.length;
+                ctx.fillRect(a.x * 64, a.y * 64, 64, 64);
+                for (let x = 0; x <= canvas.width; x += 64) ctx.fillRect(x, 0, 1, canvas.height);
+                for (let y = 0; y <= canvas.height; y += 64) ctx.fillRect(0, y, canvas.width, 1);
+                ctx.globalAlpha = 1.0;
+            });
+        }
+    });
+</script>
+</body>
+</html>
