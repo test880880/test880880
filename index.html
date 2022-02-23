@@ -14,9 +14,9 @@
     let s = Date.now();
     const response = search([
         [1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1],
+        [1, 2, 1, 0, 1, 1],
+        [1, 1, 0, 0, 1, 1],
+        [1, 1, 0, 2, 1, 1],
         [1, 1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1, 1]
     ], {x: 1, y: 1}, {x: 3, y: 3}, {diagonal: true});
@@ -25,30 +25,44 @@
     const ctx = canvas.getContext("2d");
     canvas.width = response.grid[0].length * 64;
     canvas.height = response.grid.length * 64;
+    const bestResponse = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        response.grid.forEach((l, y) => l.forEach((a, x) => {
+            ctx.globalAlpha = 1.0;
+            if (a === 0) ctx.fillRect(x * 64, y * 64, 64, 64);
+        }));
+        response.best.forEach((a, j) => {
+            ctx.fillStyle = "rgb(255, 0, 0)";
+            ctx.globalAlpha = (j + 1) / response.best.length;
+            ctx.fillRect(a.x * 64, a.y * 64, 64, 64);
+            ctx.globalAlpha = 1.0;
+            ctx.fillStyle = "#000000";
+        });
+        for (let x = 0; x <= canvas.width; x += 64) ctx.fillRect(x, 0, 1, canvas.height);
+        for (let y = 0; y <= canvas.height; y += 64) ctx.fillRect(0, y, canvas.width, 1);
+    }
+    bestResponse();
     let r = 0;
     addEventListener("keydown", ev => {
         if (ev.key === " ") {
             if (!response.all[r]) r = 0;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            response.all[r].forEach((a, j) => {
-                ctx.globalAlpha = j / response.all[r].length;
-                ctx.fillRect(a.x * 64, a.y * 64, 64, 64);
-                for (let x = 0; x <= canvas.width; x += 64) ctx.fillRect(x, 0, 1, canvas.height);
-                for (let y = 0; y <= canvas.height; y += 64) ctx.fillRect(0, y, canvas.width, 1);
+            response.grid.forEach((l, y) => l.forEach((a, x) => {
                 ctx.globalAlpha = 1.0;
+                if (a === 0) ctx.fillRect(x * 64, y * 64, 64, 64);
+            }))
+            response.all[r].forEach((a, j) => {
+                ctx.fillStyle = "rgb(255, 0, 0)";
+                ctx.globalAlpha = (j + 1) / response.all[r].length;
+                ctx.fillRect(a.x * 64, a.y * 64, 64, 64);
+                ctx.globalAlpha = 1.0;
+                ctx.fillStyle = "#000000";
             });
+            for (let x = 0; x <= canvas.width; x += 64) ctx.fillRect(x, 0, 1, canvas.height);
+            for (let y = 0; y <= canvas.height; y += 64) ctx.fillRect(0, y, canvas.width, 1);
             r++;
         }
-        if (ev.key === "Shift") {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            response.best.forEach((a, j) => {
-                ctx.globalAlpha = (j + 1) / response.best.length;
-                ctx.fillRect(a.x * 64, a.y * 64, 64, 64);
-                for (let x = 0; x <= canvas.width; x += 64) ctx.fillRect(x, 0, 1, canvas.height);
-                for (let y = 0; y <= canvas.height; y += 64) ctx.fillRect(0, y, canvas.width, 1);
-                ctx.globalAlpha = 1.0;
-            });
-        }
+        if (ev.key === "Shift") bestResponse();
     });
 </script>
 </body>

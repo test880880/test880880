@@ -8,7 +8,7 @@
 function search(grid, start, end, options) {
     options = options || {};
     const diagonal = !!options.diagonal;
-    const maxIterations = options.maxIterations || 256;
+    const maxIterations = options.maxIterations || 5096;
     const sync = Object.keys(options).includes("sync") ? options.sync : true;
     let iterations = 0;
     const pathList = [];
@@ -18,25 +18,21 @@ function search(grid, start, end, options) {
      * @param {number} y
      * @param {{x: number, y: number}[]} back
      * @param {boolean} main
-     * @returns {{x: number, y: number}[] | null}
      */
     function f(x, y, back = [], main = false) {
         back = JSON.parse(JSON.stringify(back));
-        if (!grid[y] || !grid[y][x] || back.some(b => b.x === x && b.y === y)) return null;
-        if (iterations++ > maxIterations) return null;
-        let res = [];
-        if (end.x === x && end.y === y) {
-            pathList.push([...back, {x, y}]);
-            return null;
-        }
+        if (x === 2 && y === 2 && back.length === 1) console.log("b", pathList, back)
+        if (back.length > 0 && pathList.some(i => JSON.stringify(i).startsWith(JSON.stringify(back).replace("]", "")))) return;
+        if (x === 2 && y === 2 && back.length === 1) console.log("c")
+        if (!grid[y] || !grid[y][x] || back.some(b => b.x === x && b.y === y)) return;
+        if (iterations++ > maxIterations) return;
+        if (end.x === x && end.y === y) return pathList.push([...back, {x, y}]);
         const poses = [[0, 1], [1, 0], [0, -1], [-1, 0], ...(diagonal ? [[1, 1], [-1, 1], [1, -1], [-1, -1]] : [])];
         for (let i = 0; i < poses.length; i++) {
             const pos = poses[i];
-            const r = f(x + pos[0], y + pos[1], [...back, {x, y}]);
-            if (r) res.push(...r);
+            if (x + pos[0] === 3 && y + pos[y] === 3) console.log("s")
+            f(x + pos[0], y + pos[1], [...back, {x, y}]);
         }
-        if (res.length > 0) console.log(res)
-        return res;
     }
 
     f(start.x, start.y, [], true);
