@@ -14,12 +14,12 @@
     let s = Date.now();
     const response = search([
         [1, 1, 1, 1, 1, 1],
-        [1, 2, 1, 0, 1, 1],
-        [1, 1, 0, 0, 1, 1],
-        [1, 1, 0, 2, 1, 1],
+        [1, 2, 1, 1, 1, 1],
         [1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1]
-    ], {x: 1, y: 1}, {x: 3, y: 3}, {diagonal: true});
+        [1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 2]
+    ], {x: 1, y: 1}, {x: 5, y: 5}, {diagonal: true});
     document.getElementById("ms").innerHTML = (Date.now() - s) + "ms";
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");

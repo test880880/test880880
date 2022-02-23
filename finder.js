@@ -21,9 +21,8 @@ function search(grid, start, end, options) {
      */
     function f(x, y, back = [], main = false) {
         back = JSON.parse(JSON.stringify(back));
-        if (x === 2 && y === 2 && back.length === 1) console.log("b", pathList, back)
-        if (back.length > 0 && pathList.some(i => JSON.stringify(i).startsWith(JSON.stringify(back).replace("]", "")))) return;
-        if (x === 2 && y === 2 && back.length === 1) console.log("c")
+        if (x === 3 && y === 3 && back.length === 2) console.log("c", back, pathList)
+        if (back.length > 1 && pathList.some(i => JSON.stringify(i).startsWith(JSON.stringify(back).replace("]", "")))) return;
         if (!grid[y] || !grid[y][x] || back.some(b => b.x === x && b.y === y)) return;
         if (iterations++ > maxIterations) return;
         if (end.x === x && end.y === y) return pathList.push([...back, {x, y}]);
